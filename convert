@@ -13,7 +13,7 @@ else:
 print("""#!/bin/sh
 c=/*
 trap "printf '\\033[0m'" EXIT TERM
-
+g
 %sbc %s "$0"
 exit; */1
 
@@ -25,7 +25,7 @@ exit; */1
 while(c) while (c) {
 print "\033[0m\\n\\nВведите слово или Ctrl-C для выхода: \033[97m"
 ibase=36;c=read();ibase=A
-if(!c)halt
+
 "\033[92m"
 """ % ('tr -u a-z A-Z | ' if use_tr else '', bc_param))
 
