@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+
+import sys, re
+
+sys.stdin.reconfigure(encoding='cp1251')
+
+# Check bc version
+if (int(sys.argv[1].split('.')[0]) < 2):
+    use_tr, bc_param = False, '-q'
+else:
+    use_tr, bc_param = True, '-R'
+
+print("""#!/bin/sh
+c=/*
+trap "printf '\\033[0m'" EXIT TERM
+
+%sbc %s "$0"
+exit; */1
+
+"
+\033[103;30m                                   \033[0m
+\033[103;30m    Англо-русский словарь. 2025    \033[0m
+\033[103;30m                                   \033[0m"
+
+while(c) while (c) {
+print "\033[0m\\n\\nВведите слово или Ctrl-C для выхода: \033[97m"
+ibase=36;c=read();ibase=A
+if(!c)halt
+"\033[92m"
+""" % ('tr -u a-z A-Z | ' if use_tr else '', bc_param))
+
+while True:
+    try:
+        en, ru = input().strip(), input().strip()
+    except EOFError:
+        break
+
+    en = re.sub(r'^(?:a|the)\s+', '', en.lower())
+    if ' ' in en or '-' in en: continue
+
+    ru = "\n".join(x.capitalize() for x in ru.replace('"', '\\q').split("\t"))
+
+    pattern = 'if(c==%s){print"%s";break}' if '\\' in ru else 'if(c==%s){"%s";break}'
+    print(pattern % (int(en, 36), ru))
+
+print('"Неизвестное слово";}\nquit()')
