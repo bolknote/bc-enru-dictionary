@@ -4,5 +4,13 @@
 
 ## Build and usage
 
+Requirements:
+- python 3.7+
+- bc
+- curl
+- make
+
+Run:
+
 - make
 - ./dict
