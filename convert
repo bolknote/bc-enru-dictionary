@@ -12,8 +12,8 @@ else:
 
 print("""#!/bin/sh
 c=/*
-trap "printf '\\033[0m'" EXIT TERM
-g
+trap "printf '\\033[0m\n'" INT TERM EXIT
+
 %sbc %s "$0"
 exit; */1
 
@@ -22,11 +22,13 @@ exit; */1
 \033[103;30m    Англо-русский словарь. 2025    \033[0m
 \033[103;30m                                   \033[0m"
 
+ibase=36
 while(c) while (c) {
 print "\033[0m\\n\\nВведите слово или Ctrl-C для выхода: \033[97m"
-ibase=36;c=read();ibase=A
+c=read()
 
-"\033[92m"
+"
+\033[F\033[92m"
 """ % ('tr -u a-z A-Z | ' if use_tr else '', bc_param))
 
 while True:
@@ -41,6 +43,6 @@ while True:
     ru = "\n".join(x.capitalize() for x in ru.replace('"', '\\q').split("\t"))
 
     pattern = 'if(c==%s){print"%s";break}' if '\\' in ru else 'if(c==%s){"%s";break}'
-    print(pattern % (int(en, 36), ru))
+    print(pattern % (en.upper(), ru))
 
 print('"Неизвестное слово";}\nquit()')
